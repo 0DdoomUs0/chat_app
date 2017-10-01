@@ -8,21 +8,30 @@
     <script>
         $(function () {
             var socket = io();
-            $('form').submit(function(){
-            socket.emit('chat message', $('#m').val());
-            $('#m').val('');
-            return false;
+            $('#form0').submit(function(){
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                return false;
             });
             socket.on('chat message', function(msg){
-            $('#messages').append($('<li>').text(msg));
+                $('#messages').append($('<li>').text(msg));
+            });
+
+            $('#btn').click(() => {
+                let nick = $('#n').val();
+                socket.emit('set nick', nick);
+                $('#messages').append($('<li>').text(`Nickname Set: ${nick}`));
             });
         });
     </script>
   </head>
   <body>
     <ul id="messages"></ul>
-    <form action="">
+    <form id='form0' action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
+    <div id='form1'>
+        <input id="n" autocomplete="off" /><button id='btn'>Set Nickname</button>
+    </div>
   </body>
 </html>
